@@ -47,7 +47,6 @@ namespace iAGE_CRUD
 
         public static bool TryParseArguments(string[] args, out EmployeeArguments ea)
         {
-            //var ea = new EmployeeArguments();
             ea = default;
             foreach (var arg in args)
             {

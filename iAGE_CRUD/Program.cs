@@ -11,18 +11,76 @@ namespace iAGE_CRUD
         {
             if (args.Length == 0)
             {
-                Console.WriteLine("Введите аргументы");
+                Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
                 return;
             }
             var operation = args[0];
             args = args.Where((val, i) => i != 0)
                        .ToArray();
 
-            //парсинг аргументов операций
-            string inputFirstName = null, inputLastName = null;
-            decimal? inputSalary = null;
-            int? inputId = null;
-            foreach (string arg in args)
+            ParseArguments(args, out var inputId, out var inputFirstName, out var inputLastName, out var inputSalary);
+
+            //обработка операций
+            if ((operation == "-update" || operation == "-get" || operation == "-delete") && inputId == null)
+            {
+                Console.WriteLine($"Не задан аргумент Id");
+                return;
+            }
+
+            var loosingArgs = new List<string>();
+            var em = new EmployeesManager();
+            switch (operation)
+            {
+                case "-add":
+                    if (inputFirstName == null) loosingArgs.Add("FirstName");
+                    if (inputLastName == null) loosingArgs.Add("LastName");
+                    if (inputSalary == null) loosingArgs.Add("Salary");
+                    if (loosingArgs.Any())
+                    {
+                        Console.WriteLine($"Не задан аргумент {String.Join(", ", loosingArgs.ToArray())}");
+                        return;
+                    }
+                    var resultInsert = em.Insert(inputFirstName, inputLastName, (decimal)inputSalary);
+                    Console.WriteLine(resultInsert == null ? "Сотрудник не добавлен" : $"Запись о сотруднике добавлена: \n\r {resultInsert.GetInfo()}");
+                    break;
+                case "-update":
+                    if (inputFirstName == null && inputLastName == null && inputSalary == null)
+                    {
+                        Console.WriteLine("Как минимум одно поле должно быть изменено");
+                    }
+                    else
+                    {
+                        var resultUpdate = em.Update((int)inputId, inputFirstName, inputLastName, inputSalary);
+                        Console.WriteLine(resultUpdate == null ? $"Сотрудник с Id={inputId} не найден" : $"Запись о сотруднике обновлена: \n\r {resultUpdate.GetInfo()}");
+                    }
+                    break;
+                case "-get":
+                    var foundEmployee = em.Get((int)inputId);
+                    Console.WriteLine(foundEmployee == null ? $"Сотрудник с Id={inputId} не найден" : $"{foundEmployee.GetInfo()}");
+                    break;
+                case "-delete":
+                    var resultDelete = em.Remove((int)inputId);
+                    Console.WriteLine(resultDelete == null ? $"Сотрудник с Id={inputId} не найден" : $"Запись о сотруднике удалена: \n\r {resultDelete.GetInfo()}");
+                    break;
+                case "-getall":
+                    var resultGetall = em.Get();
+                    if (resultGetall == null) Console.WriteLine("Сотрудники не найдены");
+                    else resultGetall.ForEach(e => Console.WriteLine(e.GetInfo()));
+                    break;
+                default:
+                    Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
+                    break;
+
+            }
+        }
+        private static void ParseArguments(string[] args, out int? inputId, out string inputFirstName, out string inputLastName, out decimal? inputSalary)
+        {
+            inputId = null;
+            inputFirstName = null;
+            inputLastName = null;
+            inputSalary = null;
+            
+            foreach (var arg in args)
             {
                 var arrArg = arg.Split(':');
                 if (arrArg.Length < 2)
@@ -33,7 +91,7 @@ namespace iAGE_CRUD
 
                 var name = arrArg[0];
                 var value = arrArg[1];
-                if (String.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     Console.WriteLine($"Неверное значение аргумента {arg}");
                     return;
@@ -57,7 +115,7 @@ namespace iAGE_CRUD
                         inputLastName = value;
                         break;
                     case "Salary":
-                        if (decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal resultSalary))
+                        if (decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var resultSalary))
                             inputSalary = resultSalary;
                         else
                         {
@@ -69,60 +127,6 @@ namespace iAGE_CRUD
                         Console.WriteLine($"Неверный аргумент {arg}");
                         break;
                 }
-            }
-            
-            //обработка операций
-            if ((operation == "-update" || operation == "-get" || operation == "-delete") && inputId == null)
-            {
-                Console.WriteLine($"Не задан аргумент Id");
-                return;
-            }
-
-            var loosingArgs = new List<string>();
-            var em = new EmployeesManager(); ;
-            switch (operation)
-            {
-                case "-add":
-                    if (inputFirstName == null) loosingArgs.Add("FirstName");
-                    if (inputLastName == null) loosingArgs.Add("LastName");
-                    if (inputSalary == null) loosingArgs.Add("Salary");
-                    if (loosingArgs.Any())
-                    {
-                        Console.WriteLine($"Не задан аргумент {String.Join(", ", loosingArgs.ToArray())}");
-                        return;
-                    }
-                    var resultInsert = em.Insert(inputFirstName, inputLastName, (decimal)inputSalary);
-                    Console.WriteLine(resultInsert == null ? "Сотрудник не добавлен" : $"Запись о сотруднике добавлена: \n\r {resultInsert.GetInfo()}");
-                    break;
-                case "-update":
-                    if (inputFirstName == null && inputLastName == null && inputSalary == null)
-                    {
-                        Console.WriteLine("Как минимум одно поле должно быть изменено");
-                        return;
-                    }
-                    else
-                    {
-                        var resultUpdate = em.Update((int)inputId, inputFirstName, inputLastName, inputSalary);
-                        Console.WriteLine(resultUpdate == null ? $"Сотрудник с Id={inputId} не найден" : $"Запись о сотруднике обновлена: \n\r {resultUpdate.GetInfo()}");
-                    }
-                    break;
-                case "-get":
-                    var foundEmployee = em.Get((int)inputId);
-                    Console.WriteLine(foundEmployee == null ? $"Сотрудник с Id={inputId} не найден" : $"{foundEmployee.GetInfo()}");
-                    break;
-                case "-delete":
-                    var resultDelete = em.Remove((int)inputId);
-                    Console.WriteLine(resultDelete == null ? $"Сотрудник с Id={inputId} не найден" : $"Запись о сотруднике удалена: \n\r {resultDelete.GetInfo()}");
-                    break;
-                case "-getall":
-                    var resultGetall = em.Get();
-                    if (resultGetall == null) Console.WriteLine("Сотрудники не найдены");
-                    else resultGetall.ForEach(e => Console.WriteLine(e.GetInfo()));
-                    break;
-                default:
-                    Console.WriteLine("Введите допустимую операцию");
-                    break;
-
             }
         }
     }

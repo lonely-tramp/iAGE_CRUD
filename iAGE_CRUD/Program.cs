@@ -18,12 +18,14 @@ namespace iAGE_CRUD
             args = args.Where((val, i) => i != 0)
                        .ToArray();
 
-            ParseArguments(args, out var inputId, out var inputFirstName, out var inputLastName, out var inputSalary);
+            var isSuccesParsing = TryParseArguments(args, out var inputId, out var inputFirstName, out var inputLastName, out var inputSalary);
+
+            if (!isSuccesParsing) return;
 
             //обработка операций
-            if ((operation == "-update" || operation == "-get" || operation == "-delete") && inputId == null)
+            if ((operation == "-get" || operation == "-update" ||  operation == "-delete") && inputId == null)
             {
-                Console.WriteLine($"Не задан аргумент Id");
+                Console.WriteLine("Не задан аргумент Id");
                 return;
             }
 
@@ -43,29 +45,28 @@ namespace iAGE_CRUD
                     var resultInsert = em.Insert(inputFirstName, inputLastName, (decimal)inputSalary);
                     Console.WriteLine(resultInsert == null ? "Сотрудник не добавлен" : $"Запись о сотруднике добавлена: \n\r {resultInsert.GetInfo()}");
                     break;
-                case "-update":
-                    if (inputFirstName == null && inputLastName == null && inputSalary == null)
-                    {
-                        Console.WriteLine("Как минимум одно поле должно быть изменено");
-                    }
-                    else
-                    {
-                        var resultUpdate = em.Update((int)inputId, inputFirstName, inputLastName, inputSalary);
-                        Console.WriteLine(resultUpdate == null ? $"Сотрудник с Id={inputId} не найден" : $"Запись о сотруднике обновлена: \n\r {resultUpdate.GetInfo()}");
-                    }
-                    break;
                 case "-get":
                     var foundEmployee = em.Get((int)inputId);
                     Console.WriteLine(foundEmployee == null ? $"Сотрудник с Id={inputId} не найден" : $"{foundEmployee.GetInfo()}");
-                    break;
-                case "-delete":
-                    var resultDelete = em.Remove((int)inputId);
-                    Console.WriteLine(resultDelete == null ? $"Сотрудник с Id={inputId} не найден" : $"Запись о сотруднике удалена: \n\r {resultDelete.GetInfo()}");
                     break;
                 case "-getall":
                     var resultGetall = em.Get();
                     if (resultGetall == null) Console.WriteLine("Сотрудники не найдены");
                     else resultGetall.ForEach(e => Console.WriteLine(e.GetInfo()));
+                    break;
+                case "-update":
+                    if (inputFirstName == null && inputLastName == null && inputSalary == null)
+                    {
+                        Console.WriteLine("Как минимум одно поле должно быть изменено");
+                        return;
+                    }
+                    var resultUpdate = em.Update((int)inputId, inputFirstName, inputLastName, inputSalary);
+                    Console.WriteLine(resultUpdate == null ? $"Сотрудник с Id={inputId} не найден" : $"Запись о сотруднике обновлена: \n\r {resultUpdate.GetInfo()}");
+                    break;
+               
+                case "-delete":
+                    var resultDelete = em.Remove((int)inputId);
+                    Console.WriteLine(resultDelete == null ? $"Сотрудник с Id={inputId} не найден" : $"Запись о сотруднике удалена: \n\r {resultDelete.GetInfo()}");
                     break;
                 default:
                     Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
@@ -73,28 +74,31 @@ namespace iAGE_CRUD
 
             }
         }
-        private static void ParseArguments(string[] args, out int? inputId, out string inputFirstName, out string inputLastName, out decimal? inputSalary)
+        private static bool TryParseArguments(string[] args, out int? inputId, out string inputFirstName, out string inputLastName, out decimal? inputSalary)
         {
             inputId = null;
             inputFirstName = null;
             inputLastName = null;
             inputSalary = null;
-            
+
             foreach (var arg in args)
             {
-                var arrArg = arg.Split(':');
-                if (arrArg.Length < 2)
+                Char[] separators = { ':' };
+                var maxCountToSplit = 2;
+                var splittedArg = arg.Split(separators, maxCountToSplit);
+
+                if (splittedArg.Length < 2)
                 {
                     Console.WriteLine($"Неверный аргумент {arg}");
-                    return;
+                    return false;
                 }
 
-                var name = arrArg[0];
-                var value = arrArg[1];
+                var name = splittedArg[0];
+                var value = splittedArg[1];
                 if (string.IsNullOrEmpty(value))
                 {
                     Console.WriteLine($"Неверное значение аргумента {arg}");
-                    return;
+                    return false;
                 }
 
                 switch (name)
@@ -105,7 +109,7 @@ namespace iAGE_CRUD
                         else
                         {
                             Console.WriteLine($"Неверное значение аргумента {arg}");
-                            return;
+                            return false;
                         }
                         break;
                     case "FirstName":
@@ -120,14 +124,15 @@ namespace iAGE_CRUD
                         else
                         {
                             Console.WriteLine($"Неверное значение аргумента {arg}");
-                            return;
+                            return false;
                         }
                         break;
                     default:
-                        Console.WriteLine($"Неверный аргумент {arg}");
+                        Console.WriteLine($"Неверное название аргумента {arg}");
                         break;
                 }
             }
+            return true;
         }
     }
 }

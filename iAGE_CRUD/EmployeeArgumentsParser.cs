@@ -50,7 +50,6 @@ namespace iAGE_CRUD
         {
             //var ea = new EmployeeArguments();
             ea = default;
-            var result = true;
             foreach (var arg in args)
             {
                 char[] separators = { ':' };
@@ -79,7 +78,7 @@ namespace iAGE_CRUD
                         else
                         {
                             Console.WriteLine($"Неверное значение аргумента {arg}");
-                            result = false;
+                            return false;
                         }
                         break;
                     case "FirstName":
@@ -94,7 +93,7 @@ namespace iAGE_CRUD
                         else
                         {
                             Console.WriteLine($"Неверное значение аргумента {arg}");
-                            result = false;
+                            return false;
                         }
                         break;
                     default:
@@ -102,7 +101,7 @@ namespace iAGE_CRUD
                         break;
                 }
             }
-            return result;
+            return true;
         }
     }
 }

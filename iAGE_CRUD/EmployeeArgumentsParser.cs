@@ -20,12 +20,11 @@ namespace iAGE_CRUD
             {
                 var loosingArgs = new List<string>();
 
-                if (Id == null) loosingArgs.Add("Id");
                 if (string.IsNullOrWhiteSpace(FirstName)) loosingArgs.Add("FirstName");
                 if (string.IsNullOrWhiteSpace(LastName)) loosingArgs.Add("LastName");
                 if (SalaryPerHour == null) loosingArgs.Add("Salary");
 
-                var result = loosingArgs.Count < 4;
+                var result = loosingArgs.Count == 4;
                 if (!result)
                     Console.WriteLine($"Не задан аргумент {String.Join(", ", loosingArgs.ToArray())}");
                 return result;

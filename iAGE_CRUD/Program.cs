@@ -51,7 +51,7 @@ namespace iAGE_CRUD
                     break;
                 case "-getall":
                     var resultGetall = em.Get();
-                    if (resultGetall == null) Console.WriteLine("Сотрудники не найдены");
+                    if (resultGetall == null || !resultGetall.Any()) Console.WriteLine("Сотрудники не найдены");
                     else resultGetall.ForEach(e => Console.WriteLine(e.GetInfo()));
                     break;
                 case "-update":

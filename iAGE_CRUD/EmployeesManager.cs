@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace iAGE_CRUD
     {
         public EmployeesManager()
         {
-            List = new List<Employee>();
-            LoadFromFile();
+            if (!LoadFromFile())
+                List = new List<Employee>();
         }
 
         private readonly string _storageFileName = ConfigurationManager.AppSettings.Get("StorageFileName") != null ? ConfigurationManager.AppSettings.Get("StorageFileName") : "ListOfEmployees.json";
@@ -24,60 +25,75 @@ namespace iAGE_CRUD
             return List.OrderByDescending(i => i.Id).First().Id + 1;
         }
 
-        private void SaveToFile()
+        private bool SaveToFile()
         {
             var json = JsonConvert.SerializeObject(List);
-            File.WriteAllText(_storageFileName, json);
+            try
+            {
+                File.WriteAllText(_storageFileName, json);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Ошибка сохранения файла:\n{e.Message}\n");
+                return false;
+            }
         }
 
-        private void LoadFromFile()
+        private bool LoadFromFile()
         {
-            if (!File.Exists(_storageFileName)) return;
-            var json = File.ReadAllText(_storageFileName);
-            List = JsonConvert.DeserializeObject<List<Employee>>(json);
+            if (!File.Exists(_storageFileName)) return false;
+            try
+            {
+                var json = File.ReadAllText(_storageFileName);
+                List = JsonConvert.DeserializeObject<List<Employee>>(json);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Ошибка загрузки файла:\n{e.Message}\n");
+                return false;
+            }
         }
 
         public Employee Insert(string firstName, string lastName, decimal salaryPerHour)
         {
-            LoadFromFile();
+            if (!LoadFromFile()) return null;
             var employee = new Employee(GetNextId(), firstName, lastName, salaryPerHour);
             List.Add(employee);
-            SaveToFile();
-            return employee;
+            return !SaveToFile() ? null : employee;
         }
 
         public Employee Update(int id, string firstName, string lastName, decimal? salaryPerHour)
         {
-            LoadFromFile();
+            if (!LoadFromFile()) return null;
             var employeeToUpdate = List.SingleOrDefault(e => e.Id == id);
             if (employeeToUpdate == null) return null;
             if (firstName != null) employeeToUpdate.FirstName = firstName;
             if (lastName != null) employeeToUpdate.LastName = lastName;
             if (salaryPerHour != null) employeeToUpdate.SalaryPerHour = (decimal)salaryPerHour;
-            SaveToFile();
-            return employeeToUpdate;
+            return !SaveToFile() ? null : employeeToUpdate;
         }
 
         public List<Employee> Get()
         {
-            LoadFromFile();
+            if (!LoadFromFile()) return null;
             return List;
         }
 
         public Employee Get(int id)
         {
-            LoadFromFile();
+            if (!LoadFromFile()) return null;
             return List.SingleOrDefault(e => e.Id == id);
         }
 
         public Employee Remove(int id)
         {
-            LoadFromFile();
+            if (!LoadFromFile()) return null;
             var employeeToRemove = List.SingleOrDefault(e => e.Id == id);
             if (employeeToRemove == null) return null;
             List.Remove(employeeToRemove);
-            SaveToFile();
-            return employeeToRemove;
+            return !SaveToFile() ? null : employeeToRemove;
         }
     }
 }

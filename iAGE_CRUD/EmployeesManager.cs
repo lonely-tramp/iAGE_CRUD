@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -13,7 +14,7 @@ namespace iAGE_CRUD
             LoadFromFile();
         }
 
-        private const string StorageFileName = "ListOfEmployees.json";
+        private readonly string _storageFileName = ConfigurationManager.AppSettings.Get("StorageFileName");
 
         private List<Employee> List { get; set; }
 
@@ -26,13 +27,13 @@ namespace iAGE_CRUD
         private void SaveToFile()
         {
             var json = JsonConvert.SerializeObject(List);
-            File.WriteAllText(StorageFileName, json);
+            File.WriteAllText(_storageFileName, json);
         }
 
         private void LoadFromFile()
         {
-            if (!File.Exists(StorageFileName)) return;
-            var json = File.ReadAllText(StorageFileName);
+            if (!File.Exists(_storageFileName)) return;
+            var json = File.ReadAllText(_storageFileName);
             List = JsonConvert.DeserializeObject<List<Employee>>(json);
         }
 

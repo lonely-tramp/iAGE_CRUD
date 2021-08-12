@@ -79,7 +79,7 @@ namespace iAGE_CRUD
             }
 
             var loosingArgs = new List<string>();
-            var em = new EmployeesManager(); ;
+            var em = new EmployeesManager();
             switch (operation)
             {
                 case "-add":
@@ -98,7 +98,6 @@ namespace iAGE_CRUD
                     if (inputFirstName == null && inputLastName == null && inputSalary == null)
                     {
                         Console.WriteLine("Как минимум одно поле должно быть изменено");
-                        return;
                     }
                     else
                     {

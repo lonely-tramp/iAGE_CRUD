@@ -38,6 +38,7 @@ namespace iAGE_CRUD
 
         public Employee Insert(string firstName, string lastName, decimal salaryPerHour)
         {
+            LoadFromFile();
             var employee = new Employee(GetNextId(), firstName, lastName, salaryPerHour);
             List.Add(employee);
             SaveToFile();
@@ -46,6 +47,7 @@ namespace iAGE_CRUD
 
         public Employee Update(int id, string firstName, string lastName, decimal? salaryPerHour)
         {
+            LoadFromFile();
             var employeeToUpdate = List.SingleOrDefault(e => e.Id == id);
             if (employeeToUpdate == null) return null;
             if (firstName != null) employeeToUpdate.FirstName = firstName;
@@ -57,16 +59,19 @@ namespace iAGE_CRUD
 
         public List<Employee> Get()
         {
+            LoadFromFile();
             return List;
         }
 
         public Employee Get(int id)
         {
+            LoadFromFile();
             return List.SingleOrDefault(e => e.Id == id);
         }
 
         public Employee Remove(int id)
         {
+            LoadFromFile();
             var employeeToRemove = List.SingleOrDefault(e => e.Id == id);
             if (employeeToRemove == null) return null;
             List.Remove(employeeToRemove);

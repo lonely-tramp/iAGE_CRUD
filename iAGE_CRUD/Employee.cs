@@ -8,7 +8,7 @@
 
         public override string GetInfo()
         {
-            return $"Id = {Id},\tFirstName = {FirstName},\tLastName = {LastName},\tSalaryPerHour = {SalaryPerHour}";
+            return $"{base.GetInfo()},\tSalaryPerHour = {SalaryPerHour}";
         }
     }
 }

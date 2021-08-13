@@ -15,7 +15,7 @@ namespace iAGE_CRUD
                 List = new List<Employee>();
         }
 
-        private readonly string _storageFileName = ConfigurationManager.AppSettings.Get("StorageFileName") != null ? ConfigurationManager.AppSettings.Get("StorageFileName") : "ListOfEmployees.json";
+        private readonly string _storageFileName = ConfigurationManager.AppSettings.Get("StorageFileName") ?? "ListOfEmployees.json";
 
         private List<Employee> List { get; set; }
 

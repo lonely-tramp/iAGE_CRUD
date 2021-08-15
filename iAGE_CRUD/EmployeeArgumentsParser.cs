@@ -2,104 +2,80 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iAGE_CRUD
 {
     public class EmployeeArgumentsParser
     {
-        public struct EmployeeArguments
-        {
-            public int? Id { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public decimal? SalaryPerHour { get; set; }
-
-            public bool IsValidForAdd()
-            {
-                var loosingArgs = new List<string>();
-
-                if (string.IsNullOrWhiteSpace(FirstName)) loosingArgs.Add("FirstName");
-                if (string.IsNullOrWhiteSpace(LastName)) loosingArgs.Add("LastName");
-                if (SalaryPerHour == null) loosingArgs.Add("Salary");
-
-                var result = loosingArgs.Count == 0;
-                if (!result)
-                    Console.WriteLine($"Не задан аргумент {String.Join(", ", loosingArgs.ToArray())}");
-                return result;
-            }
-            public bool IsValidForUpdate()
-            {
-                var result = Id != null && !(string.IsNullOrWhiteSpace(FirstName) && string.IsNullOrWhiteSpace(FirstName) && SalaryPerHour == null);
-                if (!result)
-                    Console.WriteLine("Id и минимум один из FirstName, LastName, Salary должны быть заданы");
-                return result;
-            }
-            public bool IsValidForGetOrDelete()
-            {
-                var result = Id != null;
-                if (!result)
-                    Console.WriteLine("Id должен быть задан");
-                return result;
-            }
-        }
-
-        public static bool TryParseArguments(string[] args, out EmployeeArguments ea)
+        public static bool TryParse(string[] args, out EmployeeArguments ea)
         {
             ea = default;
+            var a = GetArguments(args);
+            return TryParseValue(a, ref ea);
+        }
+
+        private static Dictionary<string, string> GetArguments(string[] args)
+        {
+            var arguments = new Dictionary<string, string>();
             foreach (var arg in args)
             {
                 char[] separators = { ':' };
-                var maxCountToSplit = 2;
+                const int maxCountToSplit = 2;
                 var splittedArg = arg.Split(separators, maxCountToSplit);
 
-                if (splittedArg.Length < 2)
-                {
-                    Console.WriteLine($"Неверный аргумент {arg}");
-                    return false;
-                }
+                if (splittedArg.Length == 2)
+                    arguments.Add(splittedArg[0], splittedArg[1]);
+                else
+                    Console.WriteLine($"Неверный формат аргумента {arg}\nДопустимый формат - key:value");
+            }
+            return arguments;
+        }
 
-                var name = splittedArg[0];
-                var value = splittedArg[1];
-                if (string.IsNullOrEmpty(value))
-                {
-                    Console.WriteLine($"Неверное значение аргумента {arg}");
-                    return false;
-                }
-
-                switch (name)
+        private static bool TryParseValue(Dictionary<string, string> args, ref EmployeeArguments ea)
+        {
+            var results = new List<bool>();
+            foreach (var arg in args)
+            {
+                var resultValue = true;
+                var resultKey = true;
+                switch (arg.Key)
                 {
                     case "Id":
-                        if (int.TryParse(value, out int resultId) && resultId > 0)
+                        if (int.TryParse(arg.Value, out int resultId) && resultId > 0)
                             ea.Id = resultId;
                         else
-                        {
-                            Console.WriteLine($"Неверное значение аргумента {arg}");
-                            return false;
-                        }
+                            resultValue = false;
                         break;
                     case "FirstName":
-                        ea.FirstName = value;
+                        if (!string.IsNullOrWhiteSpace(arg.Key))
+                            ea.FirstName = arg.Value;
+                        else
+                            resultValue = false;
                         break;
                     case "LastName":
-                        ea.LastName = value;
+                        if (!string.IsNullOrWhiteSpace(arg.Key))
+                            ea.LastName = arg.Value;
+                        else
+                            resultValue = false;
                         break;
                     case "Salary":
-                        if (decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var resultSalary))
+                        if (decimal.TryParse(arg.Value, NumberStyles.Number, CultureInfo.InvariantCulture, out var resultSalary))
                             ea.SalaryPerHour = resultSalary;
                         else
-                        {
-                            Console.WriteLine($"Неверное значение аргумента {arg}");
-                            return false;
-                        }
+                            resultValue = false;
                         break;
                     default:
-                        Console.WriteLine($"Неверное название аргумента {arg}");
+                        resultKey = false;
                         break;
                 }
+                if (!resultKey)
+                    Console.WriteLine($"Неверное название аргумента {arg.Key}");
+                if (!resultValue)
+                    Console.WriteLine($"Неверное значение \"{arg.Value}\" аргумента {arg.Key}");
+                results.Add(resultValue && resultKey);
             }
-            return true;
+
+            return results.All(r => r);
         }
     }
 }

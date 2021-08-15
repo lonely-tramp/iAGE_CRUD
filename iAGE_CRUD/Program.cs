@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace iAGE_CRUD
@@ -18,7 +16,7 @@ namespace iAGE_CRUD
             args = args.Where((val, i) => i != 0)
                        .ToArray();
 
-            var isSuccesParsing = EmployeeArgumentsParser.TryParseArguments(args, out var ea);
+            var isSuccesParsing = EmployeeArgumentsParser.TryParse(args, out var ea);
             if (!isSuccesParsing) return;
 
             var em = new EmployeesManager();

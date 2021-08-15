@@ -49,9 +49,14 @@ namespace iAGE_CRUD
                 List = JsonConvert.DeserializeObject<List<Employee>>(json);
                 return true;
             }
+            catch (JsonReaderException e)
+            {
+                Console.WriteLine($"Ошибка десериализации файла:\n{e.Message}\n");
+                return false;
+            }
             catch (Exception e)
             {
-                Console.WriteLine($"Ошибка загрузки файла:\n{e.Message}\n");
+                Console.WriteLine($"Ошибка чтения файла:\n{e.Message}\n");
                 return false;
             }
         }

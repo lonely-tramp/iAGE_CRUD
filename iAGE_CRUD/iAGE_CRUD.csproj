@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Employee.cs" />
+    <Compile Include="EmployeeArguments.cs" />
     <Compile Include="EmployeeArgumentsParser.cs" />
     <Compile Include="EmployeesManager.cs" />
     <Compile Include="Person.cs" />

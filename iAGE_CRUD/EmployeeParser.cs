@@ -14,7 +14,7 @@ namespace iAGE_CRUD
 
         public bool TryParse(string[] args, out EmployeeArguments ea)
         {
-            ea = default;
+            ea = new EmployeeArguments();
             if (!base.TryParse(args, out var la)) 
                 return false;
 

@@ -52,6 +52,7 @@
     <Compile Include="EmployeeArguments.cs" />
     <Compile Include="EmployeeParser.cs" />
     <Compile Include="EmployeesManager.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="OperationArgumentsParser.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />

@@ -1,41 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using iAGE_CRUD;
 
 namespace iAGE_CRUD
 {
-    public struct EmployeeArguments
+    public class EmployeeArguments
     {
         public int? Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public decimal? SalaryPerHour { get; set; }
 
-        public bool IsValidForAdd()
+        private ArgumetsEnum GetMask()
         {
-            var loosingArgs = new List<string>();
-
-            if (string.IsNullOrWhiteSpace(FirstName)) loosingArgs.Add("FirstName");
-            if (string.IsNullOrWhiteSpace(LastName)) loosingArgs.Add("LastName");
-            if (SalaryPerHour == null) loosingArgs.Add("Salary");
-
-            var result = loosingArgs.Count == 0;
-            if (!result)
-                Console.WriteLine($"Не задан аргумент {String.Join(", ", loosingArgs.ToArray())}");
+            var result = ArgumetsEnum.None;
+            if (Id != null)
+                result |= ArgumetsEnum.Id;
+            if (!string.IsNullOrWhiteSpace(FirstName))
+                result |= ArgumetsEnum.FirstName;
+            if (!string.IsNullOrWhiteSpace(LastName))
+                result |= ArgumetsEnum.LastName;
+            if (SalaryPerHour != null)
+                result |= ArgumetsEnum.Salary;
             return result;
         }
-        public bool IsValidForUpdate()
+
+        private readonly Dictionary<OperationsEnum, List<ArgumetsEnum>> _argumentsInOperations = new Dictionary<OperationsEnum, List<ArgumetsEnum>>
         {
-            var result = Id != null && !(string.IsNullOrWhiteSpace(FirstName) && string.IsNullOrWhiteSpace(FirstName) && SalaryPerHour == null);
-            if (!result)
-                Console.WriteLine("Id и минимум один из FirstName, LastName, Salary должны быть заданы");
-            return result;
-        }
-        public bool IsValidForGetOrDelete()
+            [OperationsEnum.Add] = new List<ArgumetsEnum> { ArgumetsEnum.FirstName | ArgumetsEnum.LastName | ArgumetsEnum.Salary },
+            [OperationsEnum.Get] = new List<ArgumetsEnum> { ArgumetsEnum.Id },
+            [OperationsEnum.GetAll] = new List<ArgumetsEnum> { ArgumetsEnum.None },
+            [OperationsEnum.Update] = new List<ArgumetsEnum>
+            {
+                ArgumetsEnum.Id | ArgumetsEnum.FirstName,
+                ArgumetsEnum.Id | ArgumetsEnum.LastName,
+                ArgumetsEnum.Id | ArgumetsEnum.Salary
+            },
+            [OperationsEnum.Delete] = new List<ArgumetsEnum> { ArgumetsEnum.Id }
+        };
+
+        public bool IsValid(OperationsEnum oe)
         {
-            var result = Id != null;
-            if (!result)
-                Console.WriteLine("Id должен быть задан");
-            return result;
+            var isValid = _argumentsInOperations[oe].Contains(GetMask());
+            if (!isValid)
+            {
+                Console.WriteLine("Недопустимые аргументы операции");
+                Console.WriteLine("Допустимые аргументы:");
+                foreach (var op in _argumentsInOperations)
+                {
+                    var argsStr = string.Join(" или ", _argumentsInOperations[op.Key].Select(a => a.ToString()));
+                    Console.WriteLine($"Для {op.Key}: {argsStr}");
+                }
+            }
+
+            return isValid;
         }
     }
 }

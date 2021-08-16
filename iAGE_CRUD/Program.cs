@@ -24,20 +24,23 @@ namespace iAGE_CRUD
             switch (operation)
             {
                 case "-add":
-                    if (!ea.IsValidForAdd())
+                    if (!ea.IsValid(OperationsEnum.Add))
                         return;
 
                     var resultInsert = em.Insert(ea.FirstName, ea.LastName, (decimal)ea.SalaryPerHour);
                     Console.WriteLine(resultInsert == null ? "Сотрудник не добавлен" : $"Запись о сотруднике добавлена: \n\r {resultInsert.GetInfo()}");
                     break;
                 case "-get":
-                    if (!ea.IsValidForGetOrDelete())
+                    if (!ea.IsValid(OperationsEnum.Get))
                         return;
 
                     var foundEmployee = em.Get((int)ea.Id);
                     Console.WriteLine(foundEmployee == null ? $"Сотрудник с Id={ea.Id} не найден" : $"{foundEmployee.GetInfo()}");
                     break;
                 case "-getall":
+                    if (!ea.IsValid(OperationsEnum.GetAll))
+                        return;
+
                     var resultGetall = em.Get();
                     if (resultGetall == null || !resultGetall.Any())
                         Console.WriteLine("Сотрудники не найдены");
@@ -45,7 +48,7 @@ namespace iAGE_CRUD
                         resultGetall.ForEach(e => Console.WriteLine(e.GetInfo()));
                     break;
                 case "-update":
-                    if (!ea.IsValidForUpdate())
+                    if (!ea.IsValid(OperationsEnum.Update))
                         return;
 
                     var resultUpdate = em.Update((int)ea.Id, ea.FirstName, ea.LastName, ea.SalaryPerHour);
@@ -53,7 +56,7 @@ namespace iAGE_CRUD
                     break;
 
                 case "-delete":
-                    if (!ea.IsValidForGetOrDelete())
+                    if (!ea.IsValid(OperationsEnum.Delete))
                         return;
 
                     var resultDelete = em.Remove((int)ea.Id);
@@ -63,8 +66,6 @@ namespace iAGE_CRUD
                     Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
                     break;
             }
-
-            Console.ReadKey();
         }
     }
 }

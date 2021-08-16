@@ -16,14 +16,15 @@ namespace iAGE_CRUD
             args = args.Where((val, i) => i != 0)
                        .ToArray();
 
-            var isSuccesParsing = EmployeeArgumentsParser.TryParse(args, out var ea);
+            var parser = new EmployeeParser(':');
+            var isSuccesParsing = parser.TryParse(args, out var ea);
             if (!isSuccesParsing) return;
 
             var em = new EmployeesManager();
             switch (operation)
             {
                 case "-add":
-                    if (!ea.IsValidForAdd()) 
+                    if (!ea.IsValidForAdd())
                         return;
 
                     var resultInsert = em.Insert(ea.FirstName, ea.LastName, (decimal)ea.SalaryPerHour);
@@ -38,9 +39,9 @@ namespace iAGE_CRUD
                     break;
                 case "-getall":
                     var resultGetall = em.Get();
-                    if (resultGetall == null || !resultGetall.Any()) 
+                    if (resultGetall == null || !resultGetall.Any())
                         Console.WriteLine("Сотрудники не найдены");
-                    else 
+                    else
                         resultGetall.ForEach(e => Console.WriteLine(e.GetInfo()));
                     break;
                 case "-update":
@@ -50,7 +51,7 @@ namespace iAGE_CRUD
                     var resultUpdate = em.Update((int)ea.Id, ea.FirstName, ea.LastName, ea.SalaryPerHour);
                     Console.WriteLine(resultUpdate == null ? $"Сотрудник с Id={ea.Id} не найден" : $"Запись о сотруднике обновлена: \n\r {resultUpdate.GetInfo()}");
                     break;
-               
+
                 case "-delete":
                     if (!ea.IsValidForGetOrDelete())
                         return;
@@ -62,6 +63,8 @@ namespace iAGE_CRUD
                     Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
                     break;
             }
+
+            Console.ReadKey();
         }
     }
 }

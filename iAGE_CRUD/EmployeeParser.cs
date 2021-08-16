@@ -5,43 +5,28 @@ using System.Linq;
 
 namespace iAGE_CRUD
 {
-    public class EmployeeArgumentsParser
+    public class EmployeeParser : OperationArgumentsParser
     {
-        public static bool TryParse(string[] args, out EmployeeArguments ea)
+        public EmployeeParser(char argumentOperationSeparator) : base(argumentOperationSeparator)
+        {
+
+        }
+
+        public bool TryParse(string[] args, out EmployeeArguments ea)
         {
             ea = default;
-            var a = GetArguments(args);
-            return TryParseValue(a, ref ea);
-        }
+            if (!base.TryParse(args, out var la)) 
+                return false;
 
-        private static Dictionary<string, string> GetArguments(string[] args)
-        {
-            var arguments = new Dictionary<string, string>();
-            foreach (var arg in args)
-            {
-                char[] separators = { ':' };
-                const int maxCountToSplit = 2;
-                var splittedArg = arg.Split(separators, maxCountToSplit);
-
-                if (splittedArg.Length == 2)
-                    arguments.Add(splittedArg[0], splittedArg[1]);
-                else
-                    Console.WriteLine($"Неверный формат аргумента {arg}\nДопустимый формат - key:value");
-            }
-            return arguments;
-        }
-
-        private static bool TryParseValue(Dictionary<string, string> args, ref EmployeeArguments ea)
-        {
             var results = new List<bool>();
-            foreach (var arg in args)
+            foreach (var arg in la)
             {
                 var resultValue = true;
                 var resultKey = true;
                 switch (arg.Key)
                 {
                     case "Id":
-                        if (int.TryParse(arg.Value, out int resultId) && resultId > 0)
+                        if (int.TryParse(arg.Value, out int resultId))
                             ea.Id = resultId;
                         else
                             resultValue = false;

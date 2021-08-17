@@ -61,6 +61,9 @@ namespace iAGE_CRUD
                     var resultDelete = em.Remove((int)ea.Id);
                     Console.WriteLine(resultDelete == null ? $"Сотрудник с Id={ea.Id} не найден" : $"Запись о сотруднике удалена: \n\r {resultDelete.GetInfo()}");
                     break;
+                default:
+                    Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
+                    break;
             }
         }
     }

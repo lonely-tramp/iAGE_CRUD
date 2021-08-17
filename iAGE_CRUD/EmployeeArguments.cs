@@ -35,7 +35,11 @@ namespace iAGE_CRUD
             {
                 ArgumetsEnum.Id | ArgumetsEnum.FirstName,
                 ArgumetsEnum.Id | ArgumetsEnum.LastName,
-                ArgumetsEnum.Id | ArgumetsEnum.Salary
+                ArgumetsEnum.Id | ArgumetsEnum.Salary,
+                ArgumetsEnum.Id | ArgumetsEnum.FirstName | ArgumetsEnum.LastName,
+                ArgumetsEnum.Id | ArgumetsEnum.FirstName | ArgumetsEnum.Salary,
+                ArgumetsEnum.Id | ArgumetsEnum.LastName | ArgumetsEnum.Salary,
+                ArgumetsEnum.Id | ArgumetsEnum.FirstName | ArgumetsEnum.LastName | ArgumetsEnum.Salary,
             },
             [OperationsEnum.Delete] = new List<ArgumetsEnum> { ArgumetsEnum.Id }
         };

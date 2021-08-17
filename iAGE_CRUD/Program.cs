@@ -20,48 +20,43 @@ namespace iAGE_CRUD
             var isSuccesParsing = parser.TryParse(args, out var ea);
             if (!isSuccesParsing) return;
 
+            var operationName = operation.Remove(0, 1);
+            var operationEnum = (OperationsEnum) Enum.Parse(typeof(OperationsEnum), operationName, true);
+
+            if (!ea.IsValid(operationEnum))
+                return;
+
             var em = new EmployeesManager();
             switch (operation)
             {
                 case "-add":
-                    if (!ea.IsValid(OperationsEnum.Add))
-                        return;
-
                     var resultInsert = em.Insert(ea.FirstName, ea.LastName, (decimal)ea.SalaryPerHour);
                     Console.WriteLine(resultInsert == null ? "Сотрудник не добавлен" : $"Запись о сотруднике добавлена: \n\r {resultInsert.GetInfo()}");
                     break;
-                case "-get":
-                    if (!ea.IsValid(OperationsEnum.Get))
-                        return;
 
+                case "-get":
                     var foundEmployee = em.Get((int)ea.Id);
                     Console.WriteLine(foundEmployee == null ? $"Сотрудник с Id={ea.Id} не найден" : $"{foundEmployee.GetInfo()}");
                     break;
-                case "-getall":
-                    if (!ea.IsValid(OperationsEnum.GetAll))
-                        return;
 
+                case "-getall":
                     var resultGetall = em.Get();
                     if (resultGetall == null || !resultGetall.Any())
                         Console.WriteLine("Сотрудники не найдены");
                     else
                         resultGetall.ForEach(e => Console.WriteLine(e.GetInfo()));
                     break;
-                case "-update":
-                    if (!ea.IsValid(OperationsEnum.Update))
-                        return;
 
+                case "-update":
                     var resultUpdate = em.Update((int)ea.Id, ea.FirstName, ea.LastName, ea.SalaryPerHour);
                     Console.WriteLine(resultUpdate == null ? $"Сотрудник с Id={ea.Id} не найден" : $"Запись о сотруднике обновлена: \n\r {resultUpdate.GetInfo()}");
                     break;
 
                 case "-delete":
-                    if (!ea.IsValid(OperationsEnum.Delete))
-                        return;
-
                     var resultDelete = em.Remove((int)ea.Id);
                     Console.WriteLine(resultDelete == null ? $"Сотрудник с Id={ea.Id} не найден" : $"Запись о сотруднике удалена: \n\r {resultDelete.GetInfo()}");
                     break;
+
                 default:
                     Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
                     break;

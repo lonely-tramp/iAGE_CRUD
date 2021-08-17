@@ -26,7 +26,7 @@ namespace iAGE_CRUD
             return result;
         }
 
-        private static readonly Dictionary<OperationsEnum, List<ArgumetsEnum>> _argumentsInOperations = new Dictionary<OperationsEnum, List<ArgumetsEnum>>
+        private static readonly Dictionary<OperationsEnum, List<ArgumetsEnum>> ArgumentsInOperations = new Dictionary<OperationsEnum, List<ArgumetsEnum>>
         {
             [OperationsEnum.Add] = new List<ArgumetsEnum> { ArgumetsEnum.FirstName | ArgumetsEnum.LastName | ArgumetsEnum.Salary },
             [OperationsEnum.Get] = new List<ArgumetsEnum> { ArgumetsEnum.Id },
@@ -46,14 +46,14 @@ namespace iAGE_CRUD
 
         public bool IsValid(OperationsEnum oe)
         {
-            var isValid = _argumentsInOperations[oe].Contains(GetMask());
+            var isValid = ArgumentsInOperations[oe].Contains(GetMask());
             if (!isValid)
             {
                 Console.WriteLine("Недопустимые аргументы операции");
                 Console.WriteLine("Допустимые аргументы:");
-                foreach (var op in _argumentsInOperations)
+                foreach (var op in ArgumentsInOperations)
                 {
-                    var argsStr = string.Join(" или ", _argumentsInOperations[op.Key].Select(a => a.ToString()));
+                    var argsStr = string.Join(" или ", ArgumentsInOperations[op.Key].Select(a => a.ToString()));
                     Console.WriteLine($"Для {op.Key}: {argsStr}");
                 }
             }

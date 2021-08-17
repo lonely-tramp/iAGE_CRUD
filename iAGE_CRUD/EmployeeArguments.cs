@@ -26,7 +26,7 @@ namespace iAGE_CRUD
             return result;
         }
 
-        private readonly Dictionary<OperationsEnum, List<ArgumetsEnum>> _argumentsInOperations = new Dictionary<OperationsEnum, List<ArgumetsEnum>>
+        private static readonly Dictionary<OperationsEnum, List<ArgumetsEnum>> _argumentsInOperations = new Dictionary<OperationsEnum, List<ArgumetsEnum>>
         {
             [OperationsEnum.Add] = new List<ArgumetsEnum> { ArgumetsEnum.FirstName | ArgumetsEnum.LastName | ArgumetsEnum.Salary },
             [OperationsEnum.Get] = new List<ArgumetsEnum> { ArgumetsEnum.Id },

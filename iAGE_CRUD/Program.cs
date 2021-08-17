@@ -53,7 +53,7 @@ namespace iAGE_CRUD
                     break;
 
                 case OperationsEnum.Update:
-                    var resultUpdate = em.Update((int)ea.Id, ea.FirstName, ea.LastName, ea.SalaryPerHour);
+                    var resultUpdate = em.Update((int)ea.Id, ea.FirstName, ea.LastName, (decimal)ea.SalaryPerHour);
                     Console.WriteLine(resultUpdate == null ? $"Сотрудник с Id={ea.Id} не найден" : $"Запись о сотруднике обновлена: \n\r {resultUpdate.GetInfo()}");
                     break;
 

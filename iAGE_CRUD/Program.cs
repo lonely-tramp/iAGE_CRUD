@@ -16,17 +16,17 @@ namespace iAGE_CRUD
             args = args.Where((val, i) => i != 0)
                        .ToArray();
 
-            var parser = new EmployeeParser(':');
-            var isSuccesParsing = parser.TryParse(args, out var ea);
-            if (!isSuccesParsing) return;
-
             var operationName = operation.Remove(0, 1);
             var isSuccesOperationParse = Enum.TryParse(operationName, true, out OperationsEnum operationEnum);
-            if (!isSuccesOperationParse)
+            if (operation[0] != '-' || !isSuccesOperationParse)
             {
                 Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
                 return;
             }
+
+            var parser = new EmployeeParser(':');
+            var isSuccesParsing = parser.TryParse(args, out var ea);
+            if (!isSuccesParsing) return;
 
             if (!ea.IsValid(operationEnum))
                 return;

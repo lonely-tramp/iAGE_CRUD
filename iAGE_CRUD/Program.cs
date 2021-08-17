@@ -21,7 +21,12 @@ namespace iAGE_CRUD
             if (!isSuccesParsing) return;
 
             var operationName = operation.Remove(0, 1);
-            var operationEnum = (OperationsEnum) Enum.Parse(typeof(OperationsEnum), operationName, true);
+            var isSuccesOperationParse = Enum.TryParse(operationName, true, out OperationsEnum operationEnum);
+            if (!isSuccesOperationParse)
+            {
+                Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
+                return;
+            }
 
             if (!ea.IsValid(operationEnum))
                 return;
@@ -55,10 +60,6 @@ namespace iAGE_CRUD
                 case OperationsEnum.Delete:
                     var resultDelete = em.Remove((int)ea.Id);
                     Console.WriteLine(resultDelete == null ? $"Сотрудник с Id={ea.Id} не найден" : $"Запись о сотруднике удалена: \n\r {resultDelete.GetInfo()}");
-                    break;
-
-                default:
-                    Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
                     break;
             }
         }

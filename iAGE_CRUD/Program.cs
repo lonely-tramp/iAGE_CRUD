@@ -27,19 +27,19 @@ namespace iAGE_CRUD
                 return;
 
             var em = new EmployeesManager();
-            switch (operation)
+            switch (operationEnum)
             {
-                case "-add":
+                case OperationsEnum.Add:
                     var resultInsert = em.Insert(ea.FirstName, ea.LastName, (decimal)ea.SalaryPerHour);
                     Console.WriteLine(resultInsert == null ? "Сотрудник не добавлен" : $"Запись о сотруднике добавлена: \n\r {resultInsert.GetInfo()}");
                     break;
 
-                case "-get":
+                case OperationsEnum.Get:
                     var foundEmployee = em.Get((int)ea.Id);
                     Console.WriteLine(foundEmployee == null ? $"Сотрудник с Id={ea.Id} не найден" : $"{foundEmployee.GetInfo()}");
                     break;
 
-                case "-getall":
+                case OperationsEnum.GetAll:
                     var resultGetall = em.Get();
                     if (resultGetall == null || !resultGetall.Any())
                         Console.WriteLine("Сотрудники не найдены");
@@ -47,12 +47,12 @@ namespace iAGE_CRUD
                         resultGetall.ForEach(e => Console.WriteLine(e.GetInfo()));
                     break;
 
-                case "-update":
+                case OperationsEnum.Update:
                     var resultUpdate = em.Update((int)ea.Id, ea.FirstName, ea.LastName, ea.SalaryPerHour);
                     Console.WriteLine(resultUpdate == null ? $"Сотрудник с Id={ea.Id} не найден" : $"Запись о сотруднике обновлена: \n\r {resultUpdate.GetInfo()}");
                     break;
 
-                case "-delete":
+                case OperationsEnum.Delete:
                     var resultDelete = em.Remove((int)ea.Id);
                     Console.WriteLine(resultDelete == null ? $"Сотрудник с Id={ea.Id} не найден" : $"Запись о сотруднике удалена: \n\r {resultDelete.GetInfo()}");
                     break;

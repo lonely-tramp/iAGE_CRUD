@@ -63,7 +63,6 @@ namespace iAGE_CRUD
 
         public Employee Insert(string firstName, string lastName, decimal salaryPerHour)
         {
-            if (!LoadFromFile()) return null;
             var employee = new Employee(GetNextId(), firstName, lastName, salaryPerHour);
             List.Add(employee);
             return !SaveToFile() ? null : employee;

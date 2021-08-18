@@ -1,4 +1,4 @@
-﻿namespace iAGE_CRUD
+﻿namespace iAge_CRUD.Model
 {
     public class Argument
     {

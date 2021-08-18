@@ -1,34 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using iAge_CRUD.Model;
 
-namespace iAGE_CRUD
+namespace iAge_CRUD.Parsers
 {
-    public class OperationArgumentsParser
+    public class ArgumentsParser
     {
         public char Separator { get; }
 
-        public OperationArgumentsParser(char separator)
+        public ArgumentsParser(char separator)
         {
             Separator = separator;
         }
 
-        private List<Argument> Arguments { get; set; } = new List<Argument>();
+        private List<Argument> _arguments;
 
-        public virtual bool TryParse(string[] args, out List<Argument> la)
+        public bool TryParse(string[] args, out Dictionary<string, string> argumnets)
         {
-            la = null;
-            var result = TrySplitArguments(args);
-            if (result)
-            {
-                CleanDuplicatesArguments();
-                la = Arguments;
-            }
-            return result;
+            argumnets = null;
+            if (!TrySplitArguments(args)) return false;
+            argumnets = CleanDuplicatesArguments();
+            return true;
         }
 
         private bool TrySplitArguments(string[] args)
         {
+            _arguments = new List<Argument>();
             const int maxCountToSplit = 2;
             char[] separators = { Separator };
             var results = new List<bool>();
@@ -38,7 +36,7 @@ namespace iAGE_CRUD
                 if (splittedArg.Length == maxCountToSplit)
                 {
                     results.Add(true);
-                    Arguments.Add(new Argument(splittedArg[0], splittedArg[1]));
+                    _arguments.Add(new Argument(splittedArg[0], splittedArg[1]));
                 }
                 else
                 {
@@ -51,10 +49,10 @@ namespace iAGE_CRUD
             return results.All(b => b);
         }
 
-        private void CleanDuplicatesArguments()
+        private Dictionary<string, string> CleanDuplicatesArguments()
         {
-            var result = new List<Argument>();
-            var allKeys = Arguments
+            var arguments = new List<Argument>();
+            var allKeys = _arguments
                 .GroupBy(a => a.Key)
                 .Select(g => new
                 {
@@ -64,16 +62,21 @@ namespace iAGE_CRUD
 
             foreach (var k in allKeys)
             {
-                var first = Arguments.First(a => a.Key == k.Name);
+                var first = _arguments.First(a => a.Key == k.Name);
                 if (k.Count > 1)
                 {
                     Console.WriteLine($"Дублирование аргументов {k.Name} является неоднозначным.");
                     Console.WriteLine($"Будет выбран первый аргумен {first.Key}:{first.Value}");
                 }
-                result.Add(first);
+                arguments.Add(first);
             }
 
-            Arguments = result;
+            var uniqueArguments = new Dictionary<string, string>();
+            arguments.ForEach(a => uniqueArguments.Add(a.Key, a.Value));
+
+
+            return uniqueArguments;
         }
+
     }
 }

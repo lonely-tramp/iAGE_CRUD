@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using iAge_CRUD.Actions;
+﻿using System.Linq;
 using iAGE_CRUD.Actions;
 using iAGE_CRUD.Actions.Employee.Actions;
-using iAge_CRUD.Constants;
+using iAGE_CRUD.Constants;
 
-namespace iAge_CRUD
+namespace iAGE_CRUD
 {
     class Program
     {

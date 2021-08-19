@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using iAGE_CRUD.Actions.Employee;
+using iAGE_CRUD.Enums;
 using iAGE_CRUD.Parsers;
-using iAge_CRUD.Parsers;
 
-namespace iAge_CRUD.Actions
+namespace iAGE_CRUD.Actions.Employee.Actions
 {
     class UpdateEmployeeAction : EmployeeAction
     {

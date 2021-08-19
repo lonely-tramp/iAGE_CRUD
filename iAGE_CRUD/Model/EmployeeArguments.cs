@@ -1,4 +1,4 @@
-﻿namespace iAge_CRUD.Model
+﻿namespace iAGE_CRUD.Model
 {
     public class EmployeeArguments
     {

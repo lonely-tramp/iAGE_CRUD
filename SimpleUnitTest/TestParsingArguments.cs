@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using iAge_CRUD.Actions;
-using iAge_CRUD.Parsers;
-using iAGE_CRUD.Parsers;
+﻿using iAGE_CRUD.Parsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SimpleUnitTest

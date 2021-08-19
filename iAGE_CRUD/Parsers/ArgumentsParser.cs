@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using iAge_CRUD.Model;
+using iAGE_CRUD.Model;
 
-namespace iAge_CRUD.Parsers
+namespace iAGE_CRUD.Parsers
 {
     public class ArgumentsParser
     {

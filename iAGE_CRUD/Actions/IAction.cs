@@ -1,4 +1,4 @@
-﻿namespace iAge_CRUD.Actions
+﻿namespace iAGE_CRUD.Actions
 {
     interface IAction
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace iAge_CRUD.Enums
+namespace iAGE_CRUD.Enums
 {
     [Flags]
     public enum ActionArgumetsEnum

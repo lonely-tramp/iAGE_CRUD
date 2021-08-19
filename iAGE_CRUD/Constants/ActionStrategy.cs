@@ -1,4 +1,4 @@
-﻿namespace iAge_CRUD.Constants
+﻿namespace iAGE_CRUD.Constants
 {
     static class ActionStrategy
     {

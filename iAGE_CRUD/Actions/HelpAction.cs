@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace iAGE_CRUD.Actions
 {
-    class HelpAction : Action
+    class HelpAction : IAction
     {
-        public HelpAction(IEnumerable<string> args) : base(args)
+        public void Execute()
         {
-        }
-
-        public override void Execute()
-        {
-            Console.WriteLine("Доступны следующие команды -add -update -delete -get -getall -help");
-
             const string id = "Id:<int>(больше нуля)";
             const string firstName = "FirstName:<string>(не пустая строка)";
             const string lastName = "LastName:<string>(не пустая строка)";
             const string salary = "Salary:<decimal>(больше нуля)";
+
+            Console.WriteLine("Доступны следующие команды -add -update -delete -get -getall -help");
             Console.WriteLine();
             Console.WriteLine("-add добавляет сотрудника");
             Console.WriteLine($"\tАргументы - {firstName}, {lastName}, {salary}");

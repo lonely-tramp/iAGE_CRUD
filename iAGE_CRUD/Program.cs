@@ -33,7 +33,7 @@ namespace iAGE_CRUD
                     break;
 
                 default:
-                    action = new HelpAction(null);
+                    action = new HelpAction();
                     break;
             }
 

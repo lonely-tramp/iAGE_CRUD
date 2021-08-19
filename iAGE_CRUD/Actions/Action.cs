@@ -6,10 +6,10 @@ namespace iAGE_CRUD.Actions
     {
         protected Action(IEnumerable<string> args)
         {
-            _args = args;
+            Args = args;
         }
 
-        protected readonly IEnumerable<string> _args;
+        protected readonly IEnumerable<string> Args;
 
         public abstract void Execute();
 

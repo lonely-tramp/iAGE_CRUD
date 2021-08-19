@@ -29,7 +29,7 @@ namespace iAGE_CRUD.Actions.Employee
         public bool TryParseArguments()
         {
             var ap = new ArgumentsParser(':');
-            return ap.TryParse(_args, out _arguments);
+            return ap.TryParse(Args, out _arguments);
         }
 
         protected static bool TryValidateValues(Dictionary<string, string> validatedArguments, out EmployeeArguments employee)

@@ -86,10 +86,7 @@ namespace iAGE_CRUD.Storage
 
                 var json = File.ReadAllText(_storageFileName);
                 
-                if (string.IsNullOrWhiteSpace(json))
-                    ListOfEmployees = new List<Employee>();
-                else
-                    ListOfEmployees = JsonConvert.DeserializeObject<List<Employee>>(json);
+                ListOfEmployees = string.IsNullOrWhiteSpace(json) ? new List<Employee>() : JsonConvert.DeserializeObject<List<Employee>>(json);
             }
             catch (JsonReaderException e)
             {

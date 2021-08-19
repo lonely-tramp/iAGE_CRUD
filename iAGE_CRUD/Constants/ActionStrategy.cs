@@ -2,10 +2,10 @@
 {
     static class ActionStrategy
     {
-        public const string ADD = "-add";
-        public const string GET = "-get";
-        public const string GETALL = "-getall";
-        public const string UPDATE = "-update";
-        public const string DELETE = "-delete";
+        public const string Add = "-add";
+        public const string Get = "-get";
+        public const string Getall = "-getall";
+        public const string Update = "-update";
+        public const string Delete = "-delete";
     }
 }

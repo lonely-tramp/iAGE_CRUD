@@ -14,23 +14,23 @@ namespace iAGE_CRUD
 
             switch (args.FirstOrDefault())
             {
-                case ActionStrategy.ADD:
+                case ActionStrategy.Add:
                     actionStrategy = new AddEmployeeAction(argumentsOfAction);
                     break;
                 
-                case ActionStrategy.GET:
+                case ActionStrategy.Get:
                     actionStrategy = new GetEmployeeAction(argumentsOfAction);
                     break;
                 
-                case ActionStrategy.GETALL:
+                case ActionStrategy.Getall:
                     actionStrategy = new GetAllEmployeeAction(argumentsOfAction);
                     break;
                 
-                case ActionStrategy.DELETE:
+                case ActionStrategy.Delete:
                     actionStrategy = new DeleteEmployeeAction(argumentsOfAction);
                     break;
 
-                case ActionStrategy.UPDATE:
+                case ActionStrategy.Update:
                     actionStrategy = new UpdateEmployeeAction(argumentsOfAction);
                     break;
 

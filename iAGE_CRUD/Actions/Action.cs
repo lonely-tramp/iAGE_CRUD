@@ -2,7 +2,7 @@
 
 namespace iAGE_CRUD.Actions
 {
-    public abstract class Action : IAction
+    abstract class Action : IAction
     {
         protected Action(IEnumerable<string> args)
         {

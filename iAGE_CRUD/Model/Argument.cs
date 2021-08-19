@@ -1,6 +1,6 @@
 ﻿namespace iAGE_CRUD.Model
 {
-    public class Argument
+    class Argument
     {
         public Argument(string key, string value)
         {

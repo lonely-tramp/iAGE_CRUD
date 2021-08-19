@@ -5,7 +5,7 @@ using iAGE_CRUD.Storage;
 
 namespace iAGE_CRUD.Actions.Employee
 {
-    public abstract class EmployeeAction : Action
+    abstract class EmployeeAction : Action
     {
         protected EmployeeAction(IEnumerable<string> args) : base(args)
         {

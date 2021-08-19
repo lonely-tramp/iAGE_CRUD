@@ -3,7 +3,7 @@
 namespace iAGE_CRUD.Enums
 {
     [Flags]
-    public enum ActionArgumetsEnum
+    enum ActionArgumetsEnum
     {
         None = 0,
         Id = 1,

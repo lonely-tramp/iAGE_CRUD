@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using iAGE_CRUD.Actions.Employee;
 using iAGE_CRUD.Parsers;
 using iAge_CRUD.Parsers;
 
 namespace iAge_CRUD.Actions
 {
-    class UpdateAction : Action
+    class UpdateEmployeeAction : EmployeeAction
     {
-        public UpdateAction(string[] args) : base(args)
+        public UpdateEmployeeAction(IEnumerable<string> args) : base(args)
         {
         }
 

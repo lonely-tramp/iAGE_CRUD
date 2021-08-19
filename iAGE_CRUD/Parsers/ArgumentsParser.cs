@@ -16,7 +16,7 @@ namespace iAge_CRUD.Parsers
 
         private List<Argument> _arguments;
 
-        public bool TryParse(string[] args, out Dictionary<string, string> argumnets)
+        public bool TryParse(IEnumerable<string> args, out Dictionary<string, string> argumnets)
         {
             argumnets = null;
             if (!TrySplitArguments(args)) return false;
@@ -24,7 +24,7 @@ namespace iAge_CRUD.Parsers
             return true;
         }
 
-        private bool TrySplitArguments(string[] args)
+        private bool TrySplitArguments(IEnumerable<string> args)
         {
             _arguments = new List<Argument>();
             const int maxCountToSplit = 2;

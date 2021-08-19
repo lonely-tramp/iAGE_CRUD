@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using iAge_CRUD.Actions;
 using iAGE_CRUD.Parsers;
-using iAge_CRUD.Parsers;
 
-namespace iAge_CRUD.Actions
+namespace iAGE_CRUD.Actions.Employee.Actions
 {
-    class GetAction : Action
+    class GetEmployeeAction : EmployeeAction
     {
-        public GetAction(string[] args) : base(args)
+        public GetEmployeeAction(IEnumerable<string> args) : base(args)
         {
         }
 

@@ -48,12 +48,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\Action.cs" />
-    <Compile Include="Actions\AddAction.cs" />
-    <Compile Include="Actions\DeleteAction.cs" />
-    <Compile Include="Actions\GetAction.cs" />
-    <Compile Include="Actions\GetAllAction.cs" />
+    <Compile Include="Actions\Employee\EmployeeAction.cs" />
+    <Compile Include="Actions\Employee\Actions\AddEmployeeAction.cs" />
+    <Compile Include="Actions\Employee\Actions\DeleteEmployeeAction.cs" />
+    <Compile Include="Actions\Employee\Actions\GetEmployeeAction.cs" />
+    <Compile Include="Actions\Employee\Actions\GetAllEmployeeAction.cs" />
+    <Compile Include="Actions\HelpAction.cs" />
     <Compile Include="Actions\IAction.cs" />
-    <Compile Include="Actions\UpdateAction.cs" />
+    <Compile Include="Actions\Employee\Actions\UpdateEmployeeAction.cs" />
     <Compile Include="Constants\ActionStrategy.cs" />
     <Compile Include="Enums\ActionArguments.cs" />
     <Compile Include="Enums\Actions.cs" />
@@ -70,5 +72,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

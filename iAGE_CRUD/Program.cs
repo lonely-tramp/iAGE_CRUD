@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using iAge_CRUD.Actions;
+using iAGE_CRUD.Actions;
+using iAGE_CRUD.Actions.Employee.Actions;
 using iAge_CRUD.Constants;
 
 namespace iAge_CRUD
@@ -9,46 +11,37 @@ namespace iAge_CRUD
     {
         static void Main(string[] args)
         {
-            if (args.Length == 0)
-            {
-                Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
-                return;
-            }
-            var action = args[0];
-            var argumentsOfAction = args.Where((_, i) => i != 0)
-                .ToArray();
-
+            var argumentsOfAction = args.Where((_, i) => i != 0);
             IAction actionStrategy;
 
-            switch (action)
+            switch (args.FirstOrDefault())
             {
                 case ActionStrategy.ADD:
-                    actionStrategy = new AddAction(argumentsOfAction);
+                    actionStrategy = new AddEmployeeAction(argumentsOfAction);
                     break;
                 
                 case ActionStrategy.GET:
-                    actionStrategy = new GetAction(argumentsOfAction);
+                    actionStrategy = new GetEmployeeAction(argumentsOfAction);
                     break;
                 
                 case ActionStrategy.GETALL:
-                    actionStrategy = new GetAllAction(argumentsOfAction);
+                    actionStrategy = new GetAllEmployeeAction(argumentsOfAction);
                     break;
                 
                 case ActionStrategy.DELETE:
-                    actionStrategy = new DeleteAction(argumentsOfAction);
+                    actionStrategy = new DeleteEmployeeAction(argumentsOfAction);
                     break;
-                
+
                 case ActionStrategy.UPDATE:
-                    actionStrategy = new UpdateAction(argumentsOfAction);
+                    actionStrategy = new UpdateEmployeeAction(argumentsOfAction);
                     break;
 
                 default:
-                    actionStrategy = null;
-                    Console.WriteLine("Доступны следующие команнды -add -update -delete -get -getall");
+                    actionStrategy = new HelpAction(null);
                     break;
             }
 
-            actionStrategy?.Execute();
+            actionStrategy.Execute();
         }
     }
 }

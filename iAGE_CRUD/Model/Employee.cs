@@ -1,6 +1,8 @@
-﻿namespace iAge_CRUD.Model
+﻿using System;
+
+namespace iAge_CRUD.Model
 {
-    public class Employee
+    public class Employee : ICloneable
     {
         public Employee(int id, string firstName, string lastName, decimal salary)
         {
@@ -18,5 +20,7 @@
         {
             return $"Id = {Id},\tFirstName = {FirstName},\tLastName = {LastName},\tSalaryPerHour = {SalaryPerHour}";
         }
+
+        public object Clone() => MemberwiseClone();
     }
 }

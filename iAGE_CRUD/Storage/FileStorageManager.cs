@@ -31,7 +31,7 @@ namespace iAGE_CRUD.Storage
             var employee = new Employee(id, firstName, lastName, salaryPerHour);
             ListOfEmployees.Add(employee);
             SaveToFile();
-            return ListOfEmployees.SingleOrDefault(e => e.Id == id);
+            return (Employee)ListOfEmployees.SingleOrDefault(e => e.Id == id)?.Clone();
         }
 
         public Employee Update(int id, string firstName, string lastName, decimal? salaryPerHour)
@@ -42,7 +42,7 @@ namespace iAGE_CRUD.Storage
             if (lastName != null) employeeToUpdate.LastName = lastName;
             if (salaryPerHour != null) employeeToUpdate.SalaryPerHour = (decimal)salaryPerHour;
             SaveToFile();
-            return ListOfEmployees.SingleOrDefault(e => e.Id == id);
+            return (Employee)ListOfEmployees.SingleOrDefault(e => e.Id == id)?.Clone();
         }
 
         public Employee Remove(int id)
@@ -51,17 +51,17 @@ namespace iAGE_CRUD.Storage
             if (employeeToRemove == null) return null;
             ListOfEmployees.Remove(employeeToRemove);
             SaveToFile();
-            return employeeToRemove;
+            return (Employee)employeeToRemove.Clone();
         }
 
         public Employee Get(int id)
         {
-            return ListOfEmployees.SingleOrDefault(e => e.Id == id);
+            return (Employee)ListOfEmployees.SingleOrDefault(e => e.Id == id)?.Clone();
         }
 
         public List<Employee> Get()
         {
-            return ListOfEmployees;
+            return ListOfEmployees.Select(e => (Employee)e?.Clone()).ToList();
         }
 
         private void SaveToFile()

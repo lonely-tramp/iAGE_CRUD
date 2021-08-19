@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using iAGE_CRUD.Model;
 using iAGE_CRUD.Parsers;
 using iAGE_CRUD.Storage;
@@ -9,6 +10,7 @@ namespace iAGE_CRUD.Actions.Employee
     {
         protected EmployeeAction(IEnumerable<string> args) : base(args)
         {
+            Args = Args.Where((_, i) => i != 0);
             Storage = new FileStorageManager();
         }
 

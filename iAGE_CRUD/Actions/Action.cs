@@ -9,7 +9,7 @@ namespace iAGE_CRUD.Actions
             Args = args;
         }
 
-        protected readonly IEnumerable<string> Args;
+        protected IEnumerable<string> Args;
 
         public abstract void Execute();
 

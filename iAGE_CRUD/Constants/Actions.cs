@@ -1,6 +1,6 @@
 ﻿namespace iAGE_CRUD.Constants
 {
-    static class ActionStrategy
+    static class Actions
     {
         public const string Add = "-add";
         public const string Get = "-get";

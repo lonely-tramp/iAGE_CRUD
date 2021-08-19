@@ -56,7 +56,7 @@
     <Compile Include="Actions\HelpAction.cs" />
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="Actions\Employee\Actions\UpdateEmployeeAction.cs" />
-    <Compile Include="Constants\ActionStrategy.cs" />
+    <Compile Include="Constants\Actions.cs" />
     <Compile Include="Enums\ActionArguments.cs" />
     <Compile Include="Enums\Actions.cs" />
     <Compile Include="Model\Argument.cs" />

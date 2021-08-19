@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using iAGE_CRUD.Actions;
 using iAGE_CRUD.Actions.Employee.Actions;
-using iAGE_CRUD.Constants;
 
 namespace iAGE_CRUD
 {
@@ -9,37 +8,36 @@ namespace iAGE_CRUD
     {
         static void Main(string[] args)
         {
-            var argumentsOfAction = args.Where((_, i) => i != 0);
-            IAction actionStrategy;
+            IAction action;
 
             switch (args.FirstOrDefault())
             {
-                case ActionStrategy.Add:
-                    actionStrategy = new AddEmployeeAction(argumentsOfAction);
+                case Constants.Actions.Add:
+                    action = new AddEmployeeAction(args);
                     break;
                 
-                case ActionStrategy.Get:
-                    actionStrategy = new GetEmployeeAction(argumentsOfAction);
+                case Constants.Actions.Get:
+                    action = new GetEmployeeAction(args);
                     break;
                 
-                case ActionStrategy.Getall:
-                    actionStrategy = new GetAllEmployeeAction(argumentsOfAction);
+                case Constants.Actions.Getall:
+                    action = new GetAllEmployeeAction(args);
                     break;
                 
-                case ActionStrategy.Delete:
-                    actionStrategy = new DeleteEmployeeAction(argumentsOfAction);
+                case Constants.Actions.Delete:
+                    action = new DeleteEmployeeAction(args);
                     break;
 
-                case ActionStrategy.Update:
-                    actionStrategy = new UpdateEmployeeAction(argumentsOfAction);
+                case Constants.Actions.Update:
+                    action = new UpdateEmployeeAction(args);
                     break;
 
                 default:
-                    actionStrategy = new HelpAction(null);
+                    action = new HelpAction(null);
                     break;
             }
 
-            actionStrategy.Execute();
+            action.Execute();
         }
     }
 }
